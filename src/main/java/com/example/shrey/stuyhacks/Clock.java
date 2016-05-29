@@ -19,10 +19,15 @@ public class Clock {
 
 
     public static String getTime(){
+        String finalTime;
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
-        return (sdf.format(cal.getTime()));
+        finalTime = (sdf.format(cal.getTime()));
 
+       // if (finalTime.substring(0, 1).equals("0")){
+       //     finalTime = finalTime.substring(1, finalTime.length());
+       // }
+        return finalTime;
     }
 
     public static void timer(int length, Context context){  //length in miliseconds

@@ -1,6 +1,7 @@
 package com.example.shrey.stuyhacks;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,9 +23,10 @@ public class MainActivity extends AppCompatActivity {
     int counter;
     int operationcounter = 0;
     int mode = 0;
-    double send;
+    float send;
     int questionNumber;
     int multiplechoice;
+    int y = 0;
     Button myButton;
     EditText myEditText;
     String phoneNumber;
@@ -41,13 +43,14 @@ public class MainActivity extends AppCompatActivity {
     Mode 1: Clock
     Mode 2: Multiple Choice
      */
-    double firstNumber;
-        double secondNumber;
+    float firstNumber;
+        float secondNumber;
 
         @Override
         protected void onCreate (Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             myButton = (Button)findViewById(R.id.button);
             myEditText = (EditText)findViewById(R.id.editText);
 
@@ -108,7 +111,62 @@ public class MainActivity extends AppCompatActivity {
             if (mode > 2) {
                 mode = 0;
             }
-            Toast.makeText(getApplicationContext(), "Mode " + mode, Toast.LENGTH_SHORT).show();
+            String[] modeNames = {"Share Answers", "Clock", "Calculator"};
+            Toast.makeText(MainActivity.this, modeNames[y], Toast.LENGTH_SHORT).show();
+            if(y<2){
+                y++;
+            }
+            else
+            {
+                y = 0;
+            }
+
+            if(y==0) {
+                Vibrator v6 = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                v6.vibrate(250);
+                try {
+                    Thread.sleep(450);                 //1000 milliseconds is one second.
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+
+            if (y==1){
+                v5.vibrate(100);
+                try {
+                    Thread.sleep(450);                 //1000 milliseconds is one second.
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+                v5.vibrate(100);
+                try {
+                    Thread.sleep(450);                 //1000 milliseconds is one second.
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+
+            if(y==2) {
+                v5.vibrate(75);
+                try {
+                    Thread.sleep(450);                 //1000 milliseconds is one second.
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+                v5.vibrate(75);
+                try {
+                    Thread.sleep(450);                 //1000 milliseconds is one second.
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+                v5.vibrate(75);
+                try {
+                    Thread.sleep(450);                 //1000 milliseconds is one second.
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+
+            }
         }
 
         if (mode == 0) {
@@ -128,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                         if (operationcounter == 1) {
                             addNumbers(firstNumber, secondNumber);
                             send = addNumbers(firstNumber, secondNumber);
-                            Toast.makeText(getApplicationContext(), Double.toString(addNumbers(firstNumber, secondNumber)), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), Float.toString(addNumbers(firstNumber, secondNumber)), Toast.LENGTH_SHORT).show();
                             try {
                                 Thread.sleep(600);                 //1000 milliseconds is one second.
                             } catch (InterruptedException ex) {
@@ -142,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
                         if (operationcounter == 2) {
                             subNumbers(firstNumber, secondNumber);
                             send = subNumbers(firstNumber, secondNumber);
-                            Toast.makeText(getApplicationContext(), Double.toString(subNumbers(firstNumber, secondNumber)), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), Float.toString(subNumbers(firstNumber, secondNumber)), Toast.LENGTH_SHORT).show();
                             try {
                                 Thread.sleep(600);                 //1000 milliseconds is one second.
                             } catch (InterruptedException ex) {
@@ -156,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
                         if (operationcounter == 3) {
                             multiplyNumbers(firstNumber, secondNumber);
                             send = multiplyNumbers(firstNumber, secondNumber);
-                            Toast.makeText(getApplicationContext(), Double.toString(multiplyNumbers(firstNumber, secondNumber)), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), Float.toString(multiplyNumbers(firstNumber, secondNumber)), Toast.LENGTH_SHORT).show();
                             try {
                                 Thread.sleep(600);                 //1000 milliseconds is one second.
                             } catch (InterruptedException ex) {
@@ -170,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
                         if (operationcounter == 4) {
                             divideNumbers(firstNumber, secondNumber);
                             send = divideNumbers(firstNumber, secondNumber);
-                            Toast.makeText(getApplicationContext(), Double.toString(divideNumbers(firstNumber, secondNumber)), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), Float.toString(divideNumbers(firstNumber, secondNumber)), Toast.LENGTH_SHORT).show();
                             try {
                                 Thread.sleep(600);                 //1000 milliseconds is one second.
                             } catch (InterruptedException ex) {
@@ -285,15 +343,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public ArrayList<Integer> digits(double number){
-        String numberString = Double.toString(number);
+    public ArrayList<Integer> digits(float number){
+        String numberString = Float.toString(number);
         ArrayList<Integer> response = new ArrayList<Integer>();
         for (int i = 0; i < numberString.length(); i++){
             if (numberString.substring(i, i+1).equals("-")){
                 response.add(-1);
             }
-            if (numberString.substring(i, i+1).equals(".")){
+            else if (numberString.substring(i, i+1).equals(".")){
                 response.add(-2);
+            }
+            else if (numberString.substring(i, i+1).equals("0")){
+                response.add(10);
             }
             else{
                 response.add(Integer.parseInt(numberString.substring(i, i+1)));
@@ -342,19 +403,19 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public double addNumbers(double a, double b){
+    public float addNumbers(float a, float b){
         return a+b;
     }
 
-    public double subNumbers(double a, double b){
+    public float subNumbers(float a, float b){
         return a - b;
     }
 
-    public double multiplyNumbers(double a, double b) {
+    public float multiplyNumbers(float a, float b) {
         return a * b;
     }
 
-    public double divideNumbers(double a, double b){
+    public float divideNumbers(float a, float b){
         return a/b;
     }
 
@@ -372,8 +433,11 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < time.length(); i++){
             System.out.println(time.substring(i, i+1));
-            if (i==2){
+            if (time.substring(i, i+1).equals(":")){
                 timeList.add(-1);
+            }
+            else if (time.substring(i, i+1).equals("0")){
+                timeList.add(10);
             }
             else{
                 timeList.add(Integer.parseInt(time.substring(i, i+1)));
@@ -381,9 +445,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         for (int i = 0; i < 5; i++){
-            System.out.println(timeList.get(i));
+//            System.out.println(timeList.get(i));
             if (timeList.get(i)==-1){
-                v.vibrate(250);
+                v.vibrate(500);
                 try {
                     Thread.sleep(500);                 //1000 milliseconds is one second.
                 } catch (InterruptedException ex) {
@@ -418,7 +482,7 @@ public class MainActivity extends AppCompatActivity {
 
             String phoneNo = phoneNumber;
             if (multiplechoice == 0) {
-                 message = Integer.toString(questionNumber) + "-- " + Double.toString(send);
+                 message = Integer.toString(questionNumber) + "-- " + Float.toString(send);
             } else if (multiplechoice == 1) {
                  message = Integer.toString(questionNumber) + "--" + "A";
                 multiplechoice = 0;
